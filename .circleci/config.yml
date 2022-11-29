@@ -1,0 +1,47 @@
+version: 2.1
+
+orbs: 
+  gh: circleci/github-cli@2.1.0
+  
+jobs:
+  build:
+    parameters:
+      head_branch:
+        type: string
+        default: ""
+      target_branch:
+        type: string
+        default: ""
+    docker: 
+      - image: cimg/base:edge
+    steps:
+      - checkout
+      - gh/setup
+      - run:
+          name: Determine PR target branch
+          command: |
+            if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
+              echo "This is not a pull request" && exit 1
+            fi
+            
+            HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
+            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            
+            echo "$HEAD_BRANCH -> $TARGET_BRANCH"
+            
+            if [[ $HEAD_BRANCH == "<<parameters.head_branch>>" ]] && [[ $TARGET_BRANCH == "<<parameters.target_branch>>" ]]; then
+              echo "Branch conditions met"
+            else
+              echo "Exiting Job"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Run integration tests
+          command: echo "Running integration tests...."
+            
+workflows:
+  github_cli:
+    jobs:
+      - build:
+          head_branch: "dev"
+          target_branch: "main"
