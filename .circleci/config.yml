@@ -19,20 +19,6 @@ jobs:
       - checkout
       - gh/setup
       - run:
-          name: PR target branch
-          env:
-            CIRCLE_BRANCH: ${{ github.head_ref }}
-            CIRCLE_TOKEN: ${CIRCLE_TOKEN }
-            ORG: MykolaNefedchenko
-            PROJECT: circleci
-          command: |
-            curl -X POST \
-            -H "Circle-Token: ${CIRCLE_TOKEN}" \
-            -H 'Content-Type: application/json' \
-            -H 'Accept: application/json' \
-            -d "{\"branch\":\"${CIRCLE_BRANCH}\"}" \
-            https://circleci.com/api/v2/project/github/${ORG}/${PROJECT}/pipeline
-      - run:
           name: Determine PR target branch
           command: |
            # if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
