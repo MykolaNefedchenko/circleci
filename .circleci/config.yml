@@ -20,9 +20,9 @@ jobs:
       - run:
           name: Determine PR target branch
           command: |
-            if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
+           # if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
               echo "This is not a pull request" && exit 1
-            fi
+           # fi
               echo "testing...."  
           #  HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
           #  TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
@@ -41,6 +41,10 @@ jobs:
             
 workflows:
   github_cli:
+    pr:
+      branches:
+        include:
+        - dev
     jobs:
       - build:
           head_branch: "dev"
