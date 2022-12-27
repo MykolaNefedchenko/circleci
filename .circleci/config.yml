@@ -3,11 +3,7 @@ version: 2.1
 orbs: 
   gh: circleci/github-cli@2.1.0
   continuation: circleci/continuation@0.2.0
-
-parameters:
-  is_pr:
-    type: boolean
-    default: false  
+ 
 jobs:
   build:
     parameters:
@@ -22,6 +18,21 @@ jobs:
     steps:
       - checkout
       - gh/setup
+      - testing
+      - run:
+          name: PR target branch
+          env:
+            CIRCLE_BRANCH: ${{ github.head_ref }}
+            CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
+            ORG: MykolaNefedchenko
+            PROJECT: circleci
+          command: |
+          curl -X POST \
+          -H "Circle-Token: ${CIRCLE_TOKEN}" \
+          -H 'Content-Type: application/json' \
+          -H 'Accept: application/json' \
+          -d "{\"branch\":\"${CIRCLE_BRANCH}\"}" \
+          https://circleci.com/api/v2/project/github/${ORG}/${PROJECT}/pipeline
       - run:
           name: Determine PR target branch
           command: |
@@ -46,7 +57,6 @@ jobs:
             
 workflows:
   github_cli:
-    when: << pipeline.parameters.is_pr >>
     jobs:
       - build:
           head_branch: "dev"
