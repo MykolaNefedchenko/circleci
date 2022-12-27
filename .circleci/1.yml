@@ -6,7 +6,7 @@ workflows:
   setup:
     jobs:
       - continuation/continue:
-          configuration_path: ".circleci/main.yml"
+          configuration_path: ".circleci/config.yml"
           parameters: /home/circleci/params.json
           pre-steps:
             - run:
