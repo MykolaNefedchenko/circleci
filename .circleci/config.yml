@@ -3,13 +3,14 @@ version: 2.1
 orbs: 
   gh: circleci/github-cli@2.1.0
   continuation: circleci/continuation@0.2.0
-  
+
+parameters:
+  is_pr:
+    type: boolean
+    default: false  
 jobs:
   build:
     parameters:
-      is_pr:
-        type: boolean
-        default: false
       head_branch:
         type: string
         default: ""
