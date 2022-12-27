@@ -7,6 +7,9 @@ orbs:
 jobs:
   build:
     parameters:
+      is_pr:
+        type: boolean
+        default: false
       head_branch:
         type: string
         default: ""
@@ -42,6 +45,7 @@ jobs:
             
 workflows:
   github_cli:
+    when: << pipeline.parameters.is_pr >>
     jobs:
       - build:
           head_branch: "dev"
