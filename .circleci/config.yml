@@ -2,6 +2,7 @@ version: 2.1
 
 orbs: 
   gh: circleci/github-cli@2.1.0
+  continuation: circleci/continuation@0.2.0
   
 jobs:
   build:
@@ -40,11 +41,22 @@ jobs:
           command: echo "Running integration tests...."
             
 workflows:
+  setup:
+    jobs:
+      - continuation/continue:
+          configuration_path: ".circleci/main.yml"
+          parameters: /home/circleci/params.json
+          pre-steps:
+            - run:
+                command: |
+                  if [ -z "${CIRCLE_PULL_REQUEST##*/}" ]
+                  then
+                    IS_PR=false
+                  else
+                    IS_PR=true
+                  fi
+                  echo '{ "is_pr": '$IS_PR' }' >> /home/circleci/params.json
   github_cli:
-    pr:
-      branches:
-        include:
-        - dev
     jobs:
       - build:
           head_branch: "dev"
