@@ -22,7 +22,7 @@ jobs:
           name: PR target branch
           env:
             CIRCLE_BRANCH: ${{ github.head_ref }}
-            CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
+            CIRCLE_TOKEN: ${CIRCLE_TOKEN }
             ORG: MykolaNefedchenko
             PROJECT: circleci
           command: |
