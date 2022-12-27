@@ -18,7 +18,6 @@ jobs:
     steps:
       - checkout
       - gh/setup
-      - testing
       - run:
           name: PR target branch
           env:
