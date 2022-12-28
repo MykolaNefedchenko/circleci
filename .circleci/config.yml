@@ -42,8 +42,7 @@ jobs:
 workflows:
   github_cli:
     when:
-      and:
-        - << pipeline.vcs.is_pull_request >>
+      or:
         - equal: [main, << pipeline.git.branch >>]
         - equal: [production, << pipeline.git.branch >>]
     jobs:
