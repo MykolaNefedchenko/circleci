@@ -40,12 +40,12 @@ jobs:
           command: echo "Running integration tests...."
             
 workflows:
-  when:
-    and:
-    - << pipeline.vcs.is_pull_request >>
-    - equal: [main, << pipeline.git.branch >>]
-    - equal: [production, << pipeline.git.branch >>]
   github_cli:
+    when:
+      and:
+        - << pipeline.vcs.is_pull_request >>
+        - equal: [main, << pipeline.git.branch >>]
+        - equal: [production, << pipeline.git.branch >>]
     jobs:
       - build:
           head_branch: "dev"
