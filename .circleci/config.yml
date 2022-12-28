@@ -42,9 +42,9 @@ jobs:
 workflows:
   github_cli:
     when:
-      or:
+      and:
         - equal: [dev, << pipeline.git.branch >>]
-        - equal: [production, << pipeline.git.branch >>]
+        - not: [null, $CIRCLE_PULL_REQUEST]
     jobs:
       - build:
           head_branch: "dev"
