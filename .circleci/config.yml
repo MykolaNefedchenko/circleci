@@ -20,7 +20,7 @@ jobs:
       - gh/setup
       - run:
           name: Determine PR target branch
-          command: echo "testing...." 
+          command: echo "$CIRCLE_PULL_REQUEST" 
          #  # if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
           #    echo "This is not a pull request" && exit 1
            # fi
