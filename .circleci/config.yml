@@ -43,7 +43,7 @@ workflows:
   github_cli:
     when:
       or:
-        - equal: [main, << pipeline.git.branch >>]
+        - equal: [dev, << pipeline.git.branch >>]
         - equal: [production, << pipeline.git.branch >>]
     jobs:
       - build:
